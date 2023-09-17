@@ -64,7 +64,7 @@ const handleSelectedPokemon = (pokemonName:string) => {
 
   return (
     <div className='bod'>
-                 <h1>The Pokemon Book</h1>
+                 <h1 className='title'>The Pokemon Book</h1>
                  <Pokemon searchedPokemons={searchedPokemons} onInputChange={handleInputChange}  selectedPokemon={selectedPokemons} onPokemonClick={handleSelectedPokemon}   />
              </div>
   )

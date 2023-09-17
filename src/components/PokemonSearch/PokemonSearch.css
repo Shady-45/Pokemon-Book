@@ -16,3 +16,10 @@
     width: 120px;
     padding: 12px;
 }
+
+@media (max-width:768px){
+    .pokemon-result-card{
+        overflow: hidden;
+        min-width: 300px;
+    }
+}

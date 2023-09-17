@@ -18,7 +18,7 @@ const Pokemon = ({searchedPokemons,onInputChange,selectedPokemon,onPokemonClick}
   return (
     <div className='pokemon-container'>
         <div className="pokemon-list">
-            <p>List of Pokemon</p>
+            <p className='title-text'>List of Pokemon</p>
             <input type="search" onChange={(e)=>onInputChange(e.target.value)} className='search' placeholder='Search Pokemons' />
             <Pokelist  onPokemonClick={onPokemonClick}  searchedPokemons={searchedPokemons}/>
         </div>
