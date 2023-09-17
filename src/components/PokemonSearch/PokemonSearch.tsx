@@ -1,15 +1,28 @@
 import React from 'react'
 import './PokemonSearch.css'
+import { pokemonSchema } from '../../PokemonSchema'
 
-const PokemonSearch = () => {
-    const isSelected = false
+
+interface PokemonSearchProps{
+selectedPokemon:pokemonSchema | undefined
+}
+
+const PokemonSearch = ({selectedPokemon}:PokemonSearchProps) => {
+    
+    const {name, id, height, weight, base_experience, sprites}=selectedPokemon || {}
   return (
     <div className='pokemon-result-card'>
         {
-            isSelected ? (
+            selectedPokemon ? (
                 <div >
-                    <h2>Name: Pikachu</h2>
-                    <h2>Height: 24</h2>
+                 <img className='pokemon-animated' src={sprites?.animated || sprites?.normal}
+                 
+                  alt="Pokemon" />
+                  <p>Name: {name}</p>
+                  <p>Id: {id}</p>
+                  <p>Height: {height}</p>
+                  <p>Weight: {weight}</p>
+                    <p>Base Exp:{base_experience}</p>
                 </div>
             )
             :(

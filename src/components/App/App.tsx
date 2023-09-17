@@ -4,31 +4,40 @@ import Pokemon from '../pokemon/Pokemon';
 import { pokemonData } from '../../data/PokemonData';
 import { pokemonSchema, PokemonSpritesSchema, UnpatchedPokemonSchema } from '../../PokemonSchema';
 
-interface AppState{
-    searchFeild:string,
-    allPokemons:pokemonSchema[],
-    searchedPokemons:pokemonSchema[],
-    selectedPokemons: pokemonSchema | undefined
-}
 
 
 const App  = ()  => {
-    useEffect(()=>{
-        const pokemndata = pokemonData
-        console.log(pokemndata);
-        const patchedPokemons:pokemonSchema[]=patchPokemonData(pokemonData)
-        setAllPokemons(patchedPokemons)
-     /*    setAllPokemons(patchedPokemons)
-        setSearchedPokemons(patchedPokemons) */
-       
-    },[])
-    const [searchFeild,setSearchFeild]=useState('')
-const [allPokemons,setAllPokemons] =useState([])
-const [searchedPokemons,setSearchedPokemons] =useState([])
-const [selectedPokemons,setSelectedPokemons] =useState(undefined)
+    
 
+const [allPokemons,setAllPokemons] =useState<pokemonSchema[]>([])
+const [searchedPokemons,setSearchedPokemons] =useState<pokemonSchema[]>([])
+const [selectedPokemons,setSelectedPokemons] =useState<pokemonSchema | undefined>()
+
+const handleInputChange = (inputValue:string)=>{
+    
+    const searchedPokemons= allPokemons.filter((pokemon:pokemonSchema)=>{
+        return(
+            pokemon.name && pokemon.name.toLowerCase().includes(inputValue.toLowerCase())
+        )
+    }) 
+
+    setSearchedPokemons(searchedPokemons)
+    
+}
+useEffect(()=>{
+    
+    
+    const patchedPokemons:pokemonSchema[]=patchPokemonData(pokemonData)
+    setAllPokemons(patchedPokemons)
+    setSearchedPokemons(patchedPokemons)
+
+   
+ /*    setAllPokemons(patchedPokemons)
+    setSearchedPokemons(patchedPokemons) */
+   
+},[])
 const patchPokemonData =(pokemons:UnpatchedPokemonSchema[]):pokemonSchema[]=>{
-const patchedPokemons = pokemons.map((pokemon)=>{
+const patchedPokemons:pokemonSchema[] = pokemons.map((pokemon)=>{
    let parsedSprites :PokemonSpritesSchema={
     normal:undefined,
     animated:undefined
@@ -36,7 +45,7 @@ const patchedPokemons = pokemons.map((pokemon)=>{
    try{
     parsedSprites= pokemon.sprites && JSON.parse(pokemon.sprites)
    }catch(e){
-    console.log(e);
+    
     
    }
    const patchPokemon:pokemonSchema ={
@@ -47,10 +56,16 @@ const patchedPokemons = pokemons.map((pokemon)=>{
 })
 return patchedPokemons
 }
+
+const handleSelectedPokemon = (pokemonName:string) => {
+    const selectedPokemon = allPokemons.find((pokemon:pokemonSchema)=>pokemon.name === pokemonName)
+    setSelectedPokemons(selectedPokemon)
+}
+
   return (
     <div className='bod'>
                  <h1>The Pokemon Book</h1>
-                 <Pokemon/>
+                 <Pokemon searchedPokemons={searchedPokemons} onInputChange={handleInputChange}  selectedPokemon={selectedPokemons} onPokemonClick={handleSelectedPokemon}   />
              </div>
   )
 }
